@@ -17,8 +17,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $keyType = 'string';
+
     public $incrementing = false;
-    
+
     protected $fillable = [
         'name',
         'email',
@@ -47,7 +48,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    
+
     protected static function boot()
     {
         parent::boot();
