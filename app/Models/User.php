@@ -57,4 +57,8 @@ class User extends Authenticatable
             $model->id = $model->id ?: (string) \Illuminate\Support\Str::orderedUuid();
         });
     }
+
+    public function tenant() {
+        return $this->belongsTo(Tenant::class);
+    }
 }
