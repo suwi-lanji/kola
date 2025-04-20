@@ -16,6 +16,10 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $keyType = 'string';
+
+    public $incrementing = false;
+
     protected $fillable = [
         'name',
         'email',
@@ -43,5 +47,19 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->id = $model->id ?: (string) \Illuminate\Support\Str::orderedUuid();
+        });
+    }
+
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
     }
 }
