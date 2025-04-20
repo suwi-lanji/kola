@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait Multitenantable
 {
-    public static function bootMultitenantable(): void {
+    public static function bootMultitenantable(): void
+    {
         static::creating(function ($model) {
             $model->tenant_id = auth()->user()->tenant_id;
         });
