@@ -2,20 +2,32 @@
 
 namespace App\Models;
 
+use App\Traits\Multitenantable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tenant extends Model
+class LandingPage extends Model
 {
-    use HasFactory;
+    use HasFactory, Multitenantable;
 
     protected $keyType = 'string';
 
     public $incrementing = false;
 
     protected $casts = [
-        'settings' => 'array',
-        'is_active' => 'boolean',
+        'content' => 'array',
+        'seo_settings' => 'array',
+        'published' => 'boolean',
+    ];
+
+    protected $fillable = [
+        'tenant_id',
+        'title',
+        'slug',
+        'custom_domain',
+        'content',
+        'seo_settings',
+        'is_published',
     ];
 
     protected static function boot()
@@ -25,10 +37,5 @@ class Tenant extends Model
         static::creating(function ($model) {
             $model->id = $model->id ?: (string) \Illuminate\Support\Str::orderedUuid();
         });
-    }
-
-    public function users()
-    {
-        return $this->hasMany(User::class);
     }
 }

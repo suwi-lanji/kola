@@ -2,20 +2,29 @@
 
 namespace App\Models;
 
+use App\Traits\Multitenantable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tenant extends Model
+class Form extends Model
 {
-    use HasFactory;
+    use HasFactory, Multitenantable;
 
     protected $keyType = 'string';
 
     public $incrementing = false;
 
     protected $casts = [
-        'settings' => 'array',
-        'is_active' => 'boolean',
+        'fields' => 'array',
+    ];
+
+    protected $fillable = [
+        'tenant_id',
+        'title',
+        'fields',
+        'settings',
+        'redirect_url',
+        'success_message',
     ];
 
     protected static function boot()
@@ -25,10 +34,5 @@ class Tenant extends Model
         static::creating(function ($model) {
             $model->id = $model->id ?: (string) \Illuminate\Support\Str::orderedUuid();
         });
-    }
-
-    public function users()
-    {
-        return $this->hasMany(User::class);
     }
 }
